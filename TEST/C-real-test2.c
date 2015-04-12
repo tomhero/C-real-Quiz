@@ -98,9 +98,15 @@ int score_board()
 {
     GtkWidget *bigbox, *vbox_up, *vbox_down, *hbox, *but_home, *but_exit, *player, *label, *score_label;
     char last_score[2];
-    if (sign == 0)
+    printf("passed!!\n");
+    /*----- CSS ----------- */
+    GtkCssProvider *provider;
+    GdkDisplay *display;
+    GdkScreen *screen;
+    /*-----------------------*/
+    if (sign <= 9)
     {
-        sign = 1;
+        sign += 1;
         return 0;
     }
     gtk_widget_destroy(main_menu);
@@ -116,6 +122,7 @@ int score_board()
     vbox_up = gtk_vbox_new(0, 0);
     vbox_down = gtk_vbox_new(0, 0);
     hbox = gtk_hbox_new(0, 0);
+    gtk_widget_set_name(main_menu, "main");
     gtk_box_pack_start(GTK_BOX(bigbox), vbox_up, 1, 1, 0);
     gtk_box_pack_start(GTK_BOX(bigbox), vbox_down, 1, 1, 0);
     gtk_box_pack_start(GTK_BOX(vbox_up), player, 1, 1, 0);
@@ -129,6 +136,23 @@ int score_board()
     g_signal_connect(but_home, "clicked", G_CALLBACK(named), bigbox);
     g_signal_connect(but_home, "clicked", G_CALLBACK(widget_destroy), vbox_up);
     g_signal_connect(but_home, "clicked", G_CALLBACK(widget_destroy), vbox_down);
+    /*------------- CSS  --------------------------------------------------------------------------------------------------*/
+  provider = gtk_css_provider_new ();
+  display = gdk_display_get_default ();
+  screen = gdk_display_get_default_screen (display);
+
+  gtk_style_context_add_provider_for_screen (screen,
+                                             GTK_STYLE_PROVIDER(provider),
+                                             GTK_STYLE_PROVIDER_PRIORITY_USER);
+
+  gtk_css_provider_load_from_data (GTK_CSS_PROVIDER (provider),
+                                     " #main {\n"
+                                     "   background-image: url('background.jpg');\n"
+                                     "   background-size: 800px 600px;\n"
+                                     "}\n",
+                                     -1, NULL);
+  g_object_unref (provider);
+/*----------------------------------------------------------------------------------------------------------------------*/
     gtk_window_set_position(GTK_WINDOW(main_menu), GTK_WIN_POS_CENTER);
     gtk_container_set_border_width (GTK_CONTAINER (main_menu), 20);
     gtk_window_set_resizable(GTK_WINDOW(main_menu), FALSE);
@@ -142,7 +166,7 @@ int timer_quiz(gpointer data)
     percent -= 0.00008;
     if(percent <= 0.0)
     {
-        widget_destroy(NULL, quiz_window);
+        gtk_widget_destroy(quiz_window);
         if (num_quiz % 2 == 0 && num_quiz < 10)
         {
             return doing_quiz_even();
@@ -541,7 +565,7 @@ int main (int argc, char *argv[])
     gtk_init (&argc, &argv);
     main_menu = gtk_window_new (GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title (GTK_WINDOW (main_menu), "C-real Quiz");
-    logo = gtk_image_new_from_file("image.png");
+    logo = gtk_image_new_from_file("logo.png");
     but_start = gtk_button_new_with_label("Start");
     but_about = gtk_button_new_with_label("About");
     but_exit = gtk_button_new_with_label("Exit");
@@ -561,7 +585,7 @@ int main (int argc, char *argv[])
     gtk_box_pack_start(GTK_BOX(doneleft), credit, 1, 1, 0);
     gtk_box_pack_start(GTK_BOX(bigbox), boxout, 1, 1, 0);
     gtk_box_pack_start(GTK_BOX(boxout), boxin, 1, 1, 0);
-    gtk_box_pack_start(GTK_BOX(boxin), logo, 0, 0, 10);
+    gtk_box_pack_start(GTK_BOX(boxin), logo, 0, 0, 5);
     gtk_box_pack_start(GTK_BOX(boxin), but_start, 1, 1, 20);
     gtk_box_pack_start(GTK_BOX(boxin), but_about, 1, 1, 0);
     gtk_box_pack_start(GTK_BOX(boxin), label3, 0, 0, 120);
