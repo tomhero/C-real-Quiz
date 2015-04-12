@@ -112,25 +112,26 @@ int score_board()
     gtk_widget_destroy(main_menu);
     main_menu = gtk_window_new (GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title (GTK_WINDOW (main_menu), "C-real Quiz");
-    player = gtk_label_new("player name.");
+    player = gtk_label_new(player_name);
     label = gtk_label_new("You score!");
     sprintf(last_score, "%d", score);
     score_label = gtk_label_new(last_score);
-    but_home = gtk_button_new_with_label("HOME");
+    but_home = gtk_button_new_with_label("REPLAY");
     but_exit = gtk_button_new_with_label("EXIT");
     bigbox = gtk_vbox_new(0, 0);
     vbox_up = gtk_vbox_new(0, 0);
     vbox_down = gtk_vbox_new(0, 0);
     hbox = gtk_hbox_new(0, 0);
     gtk_widget_set_name(main_menu, "main");
-    gtk_box_pack_start(GTK_BOX(bigbox), vbox_up, 1, 1, 0);
-    gtk_box_pack_start(GTK_BOX(bigbox), vbox_down, 1, 1, 0);
-    gtk_box_pack_start(GTK_BOX(vbox_up), player, 1, 1, 0);
-    gtk_box_pack_start(GTK_BOX(vbox_up), label, 1, 1, 0);
+    gtk_widget_set_name(player, "player");
+    gtk_box_pack_start(GTK_BOX(bigbox), vbox_up, 1, 1, 10);
+    gtk_box_pack_start(GTK_BOX(bigbox), vbox_down, 1, 1, 10);
+    gtk_box_pack_start(GTK_BOX(vbox_up), player, 1, 1, 50);
+    gtk_box_pack_start(GTK_BOX(vbox_up), label, 1, 1, 50);
     gtk_box_pack_start(GTK_BOX(vbox_up), score_label, 1, 1, 0);
     gtk_box_pack_start(GTK_BOX(vbox_down), hbox, 1, 1, 0);
-    gtk_box_pack_start(GTK_BOX(hbox), but_home, 1, 1, 0);
-    gtk_box_pack_start(GTK_BOX(hbox), but_exit, 1, 1, 0);
+    gtk_box_pack_start(GTK_BOX(hbox), but_home, 1, 1, 50);
+    gtk_box_pack_start(GTK_BOX(hbox), but_exit, 1, 1, 50);
     gtk_container_add(GTK_CONTAINER(main_menu), bigbox);
     g_signal_connect(but_exit, "clicked", G_CALLBACK(window_destroy), main_menu);
     g_signal_connect(but_home, "clicked", G_CALLBACK(named), bigbox);
@@ -149,6 +150,9 @@ int score_board()
                                      " #main {\n"
                                      "   background-image: url('background.jpg');\n"
                                      "   background-size: 800px 600px;\n"
+                                     "}\n"
+                                     " #player {\n"
+                                     " font: 25\n"
                                      "}\n",
                                      -1, NULL);
   g_object_unref (provider);
