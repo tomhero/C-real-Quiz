@@ -55,7 +55,6 @@ int widget_destroy_even(GtkWidget *widget, gpointer data)
 int correct(GtkWidget *widget)
 {
     score += 1;
-    printf("score --> %d\n", score);
 }
 
 int select(GtkWidget *widget ,gint c)
@@ -95,7 +94,6 @@ int score_board()
     GtkWidget *bigbox, *vbox_up, *vbox_down, *hbox, *but_home, *but_exit, *player, *label, *score_label;
     GtkImage *pic_your_score, *pic_replay, *pic_exit;
     char last_score[2], player_label[100] = "Player name \" ", label_score[20] = ">> ";
-    printf("passed!!\n");
     /*----- CSS ----------- */
     GtkCssProvider *provider;
     GdkDisplay *display;
@@ -243,9 +241,6 @@ int doing_quiz_even()
     strcat(path_for_quiz, "Question.png");
     strcat(path_for_true, "True.png");
     strcat(path_for_false, "False.png");
-    printf("%s\n", path_for_quiz);
-    printf("%s\n", path_for_true);
-    printf("%s\n", path_for_false);
     quiz_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title (GTK_WINDOW (quiz_window), "C-real Quiz");
     img_quiz = gtk_image_new_from_file(path_for_quiz);
@@ -347,9 +342,6 @@ int doing_quiz_odd()
     strcat(path_for_quiz, "Question.png");
     strcat(path_for_true, "True.png");
     strcat(path_for_false, "False.png");
-    printf("%s\n", path_for_quiz);
-    printf("%s\n", path_for_true);
-    printf("%s\n", path_for_false);
     quiz_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title (GTK_WINDOW (quiz_window), "C-real Quiz");
     img_quiz = gtk_image_new_from_file(path_for_quiz);
@@ -497,7 +489,6 @@ int choose_quiz(GtkWidget *widget, gpointer bigbox)
     GtkWidget *done, *choice_1, *choice_2, *choice_3, *choice_4, *choice_5, *choice_6;
     GtkImage *img1, *img2, *img3, *img4, *img5, *img6, *label;
     strcpy(player_name, gtk_entry_get_text(entry));
-    printf("%s\n", player_name);
     label = gtk_image_new_from_file("choose_set/select-quiz.png");
     choice_1 = gtk_button_new();
     choice_2 = gtk_button_new();
