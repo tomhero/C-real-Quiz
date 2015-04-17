@@ -177,7 +177,7 @@ int score_board()
 
 int timer_quiz(gpointer data)
 {
-    percent -= 0.00009;
+    percent -= 0.0001;
     if (percent <= 0.0)
     {
         gtk_widget_destroy(quiz_window);
@@ -601,8 +601,9 @@ int named(GtkWidget *widget, gpointer data)
 
 int main (int argc, char *argv[])
 {
-    GtkWidget *but_start, *but_exit, *but_about, *boxin, *boxout, *bigbox, *doneleft, *doneright, *label, *label2, *label3, *first, *credit;
-    GtkImage *logo, *pic_start, *pic_about, *pic_credit, *pic_exit;
+    GtkWidget *but_start, *but_exit, *but_about, *boxin, *boxout, *bigbox, *doneleft, *doneright;
+    GtkWidget *label, *label2, *label3, *first, *credit, *but_rule, *hbox_down, *done_down1, *done_down2;
+    GtkImage *logo, *pic_start, *pic_about, *pic_credit, *pic_exit, *pic_rule;
     /*----- CSS ----------- */
     GtkCssProvider *provider;
     GdkDisplay *display;
@@ -616,37 +617,46 @@ int main (int argc, char *argv[])
     but_about = gtk_button_new();
     but_exit = gtk_button_new();
     credit = gtk_button_new();
+    but_rule = gtk_button_new();
     pic_start = gtk_image_new_from_file("button/start.png");
     pic_about = gtk_image_new_from_file("button/about.png");
     pic_credit = gtk_image_new_from_file("button/credit.png");
     pic_exit = gtk_image_new_from_file("button/exit.png");
+    pic_rule = gtk_image_new_from_file("button/rule.png");
     gtk_button_set_image(but_start,pic_start);
     gtk_button_set_image(but_about,pic_about);
     gtk_button_set_image(but_exit,pic_exit);
     gtk_button_set_image(credit,pic_credit);
+    gtk_button_set_image(but_rule,pic_rule);
     label = gtk_label_new("");
     label2 = gtk_label_new("");
     label3 = gtk_label_new("");
+    done_down1 = gtk_label_new("");
+    done_down2 = gtk_label_new("");
     doneleft = gtk_vbox_new(0, 0);
     doneright = gtk_vbox_new(0, 0);
     boxin = gtk_vbox_new(0, 0);
     boxout = gtk_vbox_new(0, 0);
-    bigbox = gtk_hbox_new(0, 80);
+    bigbox = gtk_hbox_new(0, 75);
     first = gtk_vbox_new(0, 0);
+    hbox_down = gtk_hbox_new(0, 0);
     gtk_box_pack_start(GTK_BOX(first), bigbox, 1, 1, 0);
     gtk_box_pack_start(GTK_BOX(bigbox), doneleft, 1, 1, 0);
     gtk_box_pack_start(GTK_BOX(doneleft), label, 1, 1, 240);
     gtk_box_pack_start(GTK_BOX(doneleft), credit, 1, 1, 0);
     gtk_box_pack_start(GTK_BOX(bigbox), boxout, 1, 1, 0);
     gtk_box_pack_start(GTK_BOX(boxout), boxin, 1, 1, 0);
-    gtk_box_pack_start(GTK_BOX(boxin), logo, 0, 0, 5);
-    gtk_box_pack_start(GTK_BOX(boxin), but_start, 1, 1, 10);
-    gtk_box_pack_start(GTK_BOX(boxin), but_about, 1, 1, 0);
+    gtk_box_pack_start(GTK_BOX(boxin), logo, 0, 0, 18);
+    gtk_box_pack_start(GTK_BOX(boxin), but_start, 0, 0, 10);
+    gtk_box_pack_start(GTK_BOX(boxin), but_rule, 1, 1, 0);
     gtk_box_pack_start(GTK_BOX(boxin), label3, 0, 0, 100);
+    gtk_box_pack_start(GTK_BOX(boxin), hbox_down, 0, 0, 0);
+    gtk_box_pack_start(GTK_BOX(hbox_down), done_down1, 1, 1, 15);
+    gtk_box_pack_start(GTK_BOX(hbox_down), but_about, 0, 0, 0);
+    gtk_box_pack_start(GTK_BOX(hbox_down), done_down2, 1, 1, 15);
     gtk_box_pack_start(GTK_BOX(bigbox), doneright, 1, 1, 5);
     gtk_box_pack_start(GTK_BOX(doneright), label2, 1, 1, 240);
     gtk_box_pack_start(GTK_BOX(doneright), but_exit, 1, 1, 0);
-    //gtk_widget_set_name(logo, "logo");
     gtk_widget_set_name(but_about, "about");
     gtk_widget_set_name(but_exit, "exit");
     gtk_widget_set_name(main_menu, "main");
@@ -654,6 +664,8 @@ int main (int argc, char *argv[])
     g_signal_connect(but_start, "clicked", G_CALLBACK(named), first);
     g_signal_connect(but_start, "clicked", G_CALLBACK(widget_destroy), bigbox);
     g_signal_connect(credit, "clicked", G_CALLBACK(show_credit), NULL);
+    g_signal_connect(but_rule, "clicked", G_CALLBACK(rule), NULL);
+    g_signal_connect(but_about, "clicked", G_CALLBACK(about), NULL);
     gtk_container_add(GTK_CONTAINER(main_menu), first);
     gtk_window_set_position(GTK_WINDOW(main_menu), GTK_WIN_POS_CENTER);
     gtk_container_set_border_width (GTK_CONTAINER (main_menu), 10);
@@ -697,6 +709,32 @@ int show_credit()
     window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title (GTK_WINDOW (window), "CREDIT");
     pic_credit = gtk_image_new_from_file("credit.jpg");
+    gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
+    gtk_container_add(GTK_CONTAINER(window), pic_credit);
+    gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
+    gtk_widget_show_all(window);
+}
+
+int rule()
+{
+    GtkWidget *window;
+    GtkImage *pic_credit;
+    window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_title (GTK_WINDOW (window), "CREDIT");
+    pic_credit = gtk_image_new_from_file("rule.jpg");
+    gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
+    gtk_container_add(GTK_CONTAINER(window), pic_credit);
+    gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
+    gtk_widget_show_all(window);
+}
+
+int about()
+{
+    GtkWidget *window;
+    GtkImage *pic_credit;
+    window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_title (GTK_WINDOW (window), "CREDIT");
+    pic_credit = gtk_image_new_from_file("about.jpg");
     gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
     gtk_container_add(GTK_CONTAINER(window), pic_credit);
     gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
